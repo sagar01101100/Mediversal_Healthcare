@@ -8,7 +8,6 @@ const Order = require("./models/Order");
 // Create Express app
 const app = express();
 
-// Middleware
 app.use(bodyParser.json());
 
 // Connect to MongoDB 
@@ -36,7 +35,6 @@ app.post("/api/orders", async (req, res) => {
   }
 
   try {
-    // Dynamically generate a unique orderId
     const orderId = uuidv4();
 
     const newOrder = new Order({
@@ -68,7 +66,6 @@ app.get("/api/orders", async (req, res) => {
 });
 
 
-// Route to fetch a specific order by orderId
 app.get("/api/orders/:orderId", async (req, res) => {
   const { orderId } = req.params; 
 
@@ -86,13 +83,10 @@ app.get("/api/orders/:orderId", async (req, res) => {
 });
 
 
-// Route to delete an order by orderId
 app.delete("/api/orders/:orderId", async (req, res) => {
-  const { orderId } = req.params; // Extract orderId from URL parameters
-
+  const { orderId } = req.params;
   try {
-    const deletedOrder = await Order.findOneAndDelete({ orderId }); // Delete order by orderId
-
+    const deletedOrder = await Order.findOneAndDelete({ orderId });
     if (!deletedOrder) {
       return res.status(404).json({ message: "Order not found" }); // Respond with 404 if order doesn't exist
     }
@@ -118,8 +112,4 @@ app.delete("/api/orders", async (req, res) => {
   }
 });
 
-
-
-
-// Export the app for server setup or testing
 module.exports = app;
